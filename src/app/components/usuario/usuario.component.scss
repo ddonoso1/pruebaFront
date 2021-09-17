@@ -1,0 +1,84 @@
+table {
+    width: 100%;
+}
+
+tr.example-detail-row {
+    height: 0;
+}
+
+.example-element-row td {
+    border-bottom-width: 0;
+}
+
+.example-element-detail {
+    overflow: hidden;
+    display: flex;
+}
+
+.example-element-diagram {
+    min-width: 80px;
+    border: 2px solid black;
+    padding: 8px;
+    font-weight: lighter;
+    margin: 8px 0;
+    height: 104px;
+}
+
+.example-element-symbol {
+    font-weight: bold;
+    font-size: 40px;
+    line-height: normal;
+}
+
+.example-element-description {
+    padding: 16px;
+}
+
+.example-element-description-attribution {
+    opacity: 0.5;
+}
+
+button {
+    margin-left: 15px;
+}
+
+.inputfilter {
+    margin-left: 20px;
+    width: 65%;
+    margin-top: 15px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #e2e2e2;
+}
+
+.inputfilter:focus-visible {
+    color: #000000;
+    border: none;
+}
+
+.accionestop {
+    button {
+        margin-left: 10%;
+    }
+}
+
+.iconos {
+    color: #58a5d2ad;
+    margin-right: 10px;
+    width: 10px;
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.iconos:hover {
+    color: #3c638399;
+}
+
+.insertUruario {
+    background: #d88a41b7 !important;
+}
+
+.mat-radio-button~.mat-radio-button {
+    margin-left: 16px;
+    margin-bottom: 20px;
+}

@@ -1,0 +1,137 @@
+<div class="container">
+    <br>
+    <h2>Gestion de usuarios</h2>
+    <div class="accionestop">
+        <mat-form-field appearance="standard">
+            <mat-label>Filtrar:</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="Ingrese texto" #input class="inputfilter">
+        </mat-form-field>
+        <button mat-raised-button color="accent" class="insertUruario" (click)="openInsert(contentinsert)">Agregar nuevo usuario</button>
+    </div>
+    <br>
+    <table mat-table [dataSource]="usuarios" multiTemplateDataRows class="mat-elevation-z8">
+        <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
+            <th mat-header-cell *matHeaderCellDef> {{column}} </th>
+            <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+        </ng-container>
+
+        <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+        <ng-container matColumnDef="expandedDetail">
+            <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+                <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                    <!--<div class="example-element-diagram"> -->
+                    <div class="modal-footer " style="text-align: center;;">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p>Opciones:</p>
+                            </div>
+                            <br>
+                            <div class="col-md-12">
+                                <div class="example-element-position"> {{element.nombre}} </div>
+                                <button type="submit " class="btn btn-outline-dark colorbotonesazules" (click)="openPut(contentupdate, element)">Editar</button>
+                                <button type="submit " class="btn btn-outline-danger colorbotonesazules" (click)="eliminarUsuario(element)">Eliminar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Modal-->
+                <ng-template #contentupdate let-modal>
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modal-basic-title">Actualizar usuario {{element.nombre}} </h4>
+                        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body ">
+                        <form (ngSubmit)="actualizar(formulario)" #formulario="ngForm">
+                            <!--ID Rol-->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>ROL</label>
+                                    <select class="custom-select form-select" [(ngModel)]="usuario.id_rol" name="rol" required>
+                                <option value="" class="form-control"  selected disabled>Seleccione</option>
+                                <option *ngFor="let rol of roles" [value]="rol.id_rol">
+                                    {{rol.nombre}}
+                                </option>
+                            </select>
+                                </div>
+                                <!--NOMBRE DE USUARIO-->
+                                <div class="col-md-6">
+                                    <label for="nombre">NOMBRE</label>
+                                    <div class="input-group mb-3">
+                                        <input id="nombre" class="form-control" name="nombre" [(ngModel)]="usuario.nombre">
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Activo-->
+                            <label>Activo</label>
+                            <br>
+                            <mat-radio-group [(ngModel)]="usuario.activo" name="activo" aria-label="Seleccione una opción">
+                                <mat-radio-button value="SI" checked>SI</mat-radio-button>
+                                <mat-radio-button value="NO">NO</mat-radio-button>
+                            </mat-radio-group>
+
+                            <!--EDITAR-->
+                            <div class="modal-footer ">
+                                <button type="submit" name="submit" class="btn btn-outline-dark colorbotonesazules " (click)="modal.dismiss() ">Guardar</button>
+                            </div>
+                        </form>
+                    </div>
+                </ng-template>
+            </td>
+        </ng-container>
+
+        <ng-template #contentinsert let-modal>
+            <div class="modal-header">
+                <h4 class="modal-title" id="modal-basic-title">Crear nuevo usuario</h4>
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+
+            <div class="modal-body ">
+                <form (ngSubmit)="guardar(form)" #form="ngForm">
+                    <!--ID Rol-->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>ROL</label>
+                            <select class="custom-select form-select" [(ngModel)]="usuario.id_rol" name="rol" required>
+                                <option value="" selected disabled>Seleccione</option>
+                                <option *ngFor="let rol of roles" [value]="rol.id_rol">
+                                    {{rol.nombre}}
+                                </option>
+                            </select>
+                        </div>
+                        <!--NOMBRE DE USUARIO-->
+                        <div class="col-md-6">
+                            <label for="nombre">NOMBRE</label>
+                            <div class="input-group mb-3">
+                                <input id="nombre" class="form-control" placeholder="Obligatorio*" name="nombre" [(ngModel)]="usuario.nombre">
+                            </div>
+                        </div>
+                    </div>
+                    <!--ACTIVO-->
+                    <label>Activo</label>
+                    <br>
+                    <mat-radio-group [(ngModel)]="usuario.activo" name="activo" aria-label="Seleccione una opción">
+                        <mat-radio-button value="SI" checked>SI</mat-radio-button>
+                        <mat-radio-button value="NO">NO</mat-radio-button>
+                    </mat-radio-group>
+
+                    <!--AGREGAR-->
+                    <div class="modal-footer ">
+                        <button type="submit " class="btn btn-outline-dark colorbotonesazules " (click)="modal.dismiss() ">Guardar</button>
+                    </div>
+
+                </form>
+            </div>
+
+        </ng-template>
+
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="example-element-row" [class.example-expanded-row]="expandedElement === element" (click)="expandedElement = expandedElement === element ? null : element">
+        </tr>
+        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+    </table>
+</div>
